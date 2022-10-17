@@ -16,10 +16,7 @@ export async function mainMenu(shop) {
 
 	switch (input) {
 		case "p":
-			console.log("");
-			shop.printStock();
-			console.log("");
-			await getString("Press Enter to go back...");
+			await printShopStock(shop);
 			break;
 		case "a":
 			await addNewItemMenu(shop);
@@ -27,7 +24,16 @@ export async function mainMenu(shop) {
 	}
 }
 
+export async function printShopStock(shop) {
+	console.clear();
+	shop.printStock();
+	console.log("");
+	await getString("Press Enter to go back...");
+	shop.clearOnUpdate();
+}
+
 export async function getItemFromUser() {
+	console.clear();
 	const type = await getString(
 		"What type of item is this? (Normal, aged, legendary, backstage, conjured): ",
 		["n", "a", "l", "b", "c"]
