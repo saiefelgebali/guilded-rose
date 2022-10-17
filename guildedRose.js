@@ -16,16 +16,16 @@ class Item {
 		return newQuality;
 	}
 
-	updateQuality() {
-		let newQuality = this.quality;
-
+	getNewQuality() {
 		if (this.isExpired()) {
-			newQuality += -2;
-		} else {
-			newQuality += -1;
+			return this.quality - 2;
 		}
 
-		this.quality = this.getQualityInBounds(newQuality);
+		return this.quality - 1;
+	}
+
+	updateQuality() {
+		this.quality = this.getQualityInBounds(this.getNewQuality());
 	}
 
 	updateItem() {
@@ -47,9 +47,8 @@ class AgedItem extends Item {
 		super(name, sellIn, quality);
 	}
 
-	updateQuality() {
-		const newQuality = this.quality + 1;
-		this.quality = this.getQualityInBounds(newQuality);
+	getNewQuality() {
+		return this.quality + 1;
 	}
 }
 
@@ -59,6 +58,14 @@ class LegendaryItem extends Item {
 	}
 
 	updateItem() {}
+}
+
+class BackstagePass extends Item {
+	constructor(name, sellIn, quality) {
+		super(name, sellIn, quality);
+	}
+
+	getNewQuality() {}
 }
 
 class Shop {
