@@ -1,9 +1,9 @@
 class Item {
-	constructor(name, sellIn, quality) {
+	constructor(name, sellIn, quality, maxQuality = 50) {
 		this.name = name;
 		this.sellIn = sellIn;
 		this.quality = quality;
-		this.maxQuality = 50;
+		this.maxQuality = maxQuality;
 	}
 
 	isExpired() {
@@ -51,6 +51,14 @@ class AgedItem extends Item {
 		const newQuality = this.quality + 1;
 		this.quality = this.getQualityInBounds(newQuality);
 	}
+}
+
+class LegendaryItem extends Item {
+	constructor(name) {
+		super(name, 0, 80, 80);
+	}
+
+	updateItem() {}
 }
 
 class Shop {
@@ -105,7 +113,7 @@ class Shop {
 }
 
 const shop = new Shop([
-	// new Item("Sulfuras, Hand of Ragnaros", 0, 80),
+	new LegendaryItem("Sulfuras, Hand of Ragnaros"),
 	new AgedItem("Aged Brie", 10, 0),
 	// new Item("Witchwood Apple", 3, 15),
 	// new Item("Diving Elixir", 11, 50),
