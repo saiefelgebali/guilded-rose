@@ -10,12 +10,22 @@ class Item {
 		return this.sellIn < 0;
 	}
 
+	getQualityInBounds(newQuality) {
+		newQuality = Math.min(newQuality, this.maxQuality);
+		newQuality = Math.max(newQuality, 0);
+		return newQuality;
+	}
+
 	updateQuality() {
+		let newQuality = this.quality;
+
 		if (this.isExpired()) {
-			this.quality += -2;
-			return;
+			newQuality += -2;
+		} else {
+			newQuality += -1;
 		}
-		this.quality += -1;
+
+		this.quality = this.getQualityInBounds(newQuality);
 	}
 
 	updateItem() {
@@ -74,69 +84,10 @@ class Shop {
 		});
 	}
 
-	updateQuality() {
-		for (let i = 0; i < this.items.length; i++) {
-			if (
-				this.items[i].name != "Aged Brie" &&
-				this.items[i].name !=
-					"Backstage passes to a TAFKAL80ETC concert"
-			) {
-				if (this.items[i].quality > 0) {
-					if (this.items[i].name != "Sulfuras, Hand of Ragnaros") {
-						this.items[i].quality = this.items[i].quality - 1;
-					}
-				}
-			} else {
-				if (this.items[i].quality < 50) {
-					this.items[i].quality = this.items[i].quality + 1;
-					if (
-						this.items[i].name ==
-						"Backstage passes to a TAFKAL80ETC concert"
-					) {
-						if (this.items[i].sellIn < 11) {
-							if (this.items[i].quality < 50) {
-								this.items[i].quality =
-									this.items[i].quality + 1;
-							}
-						}
-						if (this.items[i].sellIn < 6) {
-							if (this.items[i].quality < 50) {
-								this.items[i].quality =
-									this.items[i].quality + 1;
-							}
-						}
-					}
-				}
-			}
-			if (this.items[i].name != "Sulfuras, Hand of Ragnaros") {
-				this.items[i].sellIn = this.items[i].sellIn - 1;
-			}
-			if (this.items[i].sellIn < 0) {
-				if (this.items[i].name != "Aged Brie") {
-					if (
-						this.items[i].name !=
-						"Backstage passes to a TAFKAL80ETC concert"
-					) {
-						if (this.items[i].quality > 0) {
-							if (
-								this.items[i].name !=
-								"Sulfuras, Hand of Ragnaros"
-							) {
-								this.items[i].quality =
-									this.items[i].quality - 1;
-							}
-						}
-					} else {
-						this.items[i].quality =
-							this.items[i].quality - this.items[i].quality;
-					}
-				} else {
-					if (this.items[i].quality < 50) {
-						this.items[i].quality = this.items[i].quality + 1;
-					}
-				}
-			}
-		}
+	updateStock() {
+		this.items.forEach((item) => {
+			item.updateItem();
+		});
 
 		return this.items;
 	}
@@ -154,8 +105,11 @@ const shop = new Shop([
 	new Item("Conjured Wizard Robes", 16, 50),
 ]);
 
-shop.printStock();
-for (let day = 1; day < 21; day++) {
-	shop.updateQuality();
-	shop.printStock();
+function simulateShop(days) {
+	for (let day = 0; day < days; day++) {
+		shop.updateStock();
+		shop.printStock();
+	}
 }
+
+simulateShop(3);
