@@ -60,12 +60,26 @@ class LegendaryItem extends Item {
 	updateItem() {}
 }
 
-class BackstagePass extends Item {
+class BackstagePassItem extends Item {
 	constructor(name, sellIn, quality) {
 		super(name, sellIn, quality);
 	}
 
-	getNewQuality() {}
+	getNewQuality() {
+		if (this.sellIn < 0) {
+			return 0;
+		}
+
+		if (this.sellIn <= 5) {
+			return this.quality + 3;
+		}
+
+		if (this.sellIn <= 10) {
+			return this.quality + 2;
+		}
+
+		return this.quality + 1;
+	}
 }
 
 class Shop {
@@ -124,8 +138,8 @@ const shop = new Shop([
 	new AgedItem("Aged Brie", 10, 0),
 	// new Item("Witchwood Apple", 3, 15),
 	// new Item("Diving Elixir", 11, 50),
-	// new Item("Backstage passes to a TAFKAL80ETC concert", 15, 5),
-	// new Item("Backstage passes to a TAFKAL80ETC concert", 25, 5),
+	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 6, 5),
+	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 25, 5),
 	// new Item("Backstage passes to an Ice Cream Boys concert", 25, 5),
 	// new Item("Conjured Wizard Hat", 20, 50),
 	// new Item("Conjured Wizard Robes", 16, 50),
