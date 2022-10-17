@@ -1,7 +1,7 @@
 import { getInt, getString } from "./userInput.js";
 
 export class Item {
-	static async getItemFromUser() {
+	static async createItemFromUserInput() {
 		const name = await getString("Name: ");
 		const sellIn = await getInt("Sell in days: ");
 		const quality = await getInt("Quality: ");
@@ -19,7 +19,7 @@ export class Item {
 		return this.sellIn < 0;
 	}
 
-	getQualityInBounds(newQuality) {
+	clampQuality(newQuality) {
 		newQuality = Math.min(newQuality, this.maxQuality);
 		newQuality = Math.max(newQuality, 0);
 		return newQuality;
@@ -34,7 +34,7 @@ export class Item {
 	}
 
 	updateQuality() {
-		this.quality = this.getQualityInBounds(this.getNewQuality());
+		this.quality = this.clampQuality(this.getNewQuality());
 	}
 
 	updateItem() {
@@ -65,7 +65,7 @@ export class AgedItem extends Item {
 }
 
 export class LegendaryItem extends Item {
-	static async getItemFromUser() {
+	static async createItemFromUserInput() {
 		const name = await getString("Name: ");
 		return new LegendaryItem(name);
 	}
@@ -74,7 +74,9 @@ export class LegendaryItem extends Item {
 		super(name, 0, 80, 80);
 	}
 
-	updateItem() {}
+	updateItem() {
+		// Legendary items don't change
+	}
 }
 
 export class BackstagePassItem extends Item {

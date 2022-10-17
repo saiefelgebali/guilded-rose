@@ -31,7 +31,7 @@ export async function printShopStock(shop) {
 	await getString("Press Enter to go back...");
 }
 
-export async function getItemFromUser() {
+export async function createItemFromUserInput() {
 	console.clear();
 	const type = await getString(
 		"What type of item is this? (Normal, aged, legendary, backstage, conjured): ",
@@ -40,20 +40,20 @@ export async function getItemFromUser() {
 
 	switch (type) {
 		case "a":
-			return await AgedItem.getItemFromUser();
+			return await AgedItem.createItemFromUserInput();
 		case "l":
-			return await LegendaryItem.getItemFromUser();
+			return await LegendaryItem.createItemFromUserInput();
 		case "b":
-			return await BackstagePassItem.getItemFromUser();
+			return await BackstagePassItem.createItemFromUserInput();
 		case "c":
-			return await ConjuredItem.getItemFromUser();
+			return await ConjuredItem.createItemFromUserInput();
 		default:
-			return await Item.getItemFromUser();
+			return await Item.createItemFromUserInput();
 	}
 }
 
 export async function addNewItemMenu(shop) {
 	console.clear();
-	const item = await getItemFromUser();
+	const item = await createItemFromUserInput();
 	shop.addItem(item);
 }
