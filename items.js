@@ -1,4 +1,13 @@
+import { getInt, getString } from "./userInput.js";
+
 export class Item {
+	static getItemFromUser() {
+		const name = getString("Name: ");
+		const sellIn = getInt("Sell in days: ");
+		const quality = getInt("Quality: ");
+		return new Item(name, sellIn, quality);
+	}
+
 	constructor(name, sellIn, quality, maxQuality = 50) {
 		this.name = name;
 		this.sellIn = sellIn;
@@ -56,6 +65,11 @@ export class AgedItem extends Item {
 }
 
 export class LegendaryItem extends Item {
+	static getItemFromUser() {
+		const name = getString("Name: ");
+		return new LegendaryItem(name);
+	}
+
 	constructor(name) {
 		super(name, 0, 80, 80);
 	}
