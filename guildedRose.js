@@ -101,43 +101,55 @@ class ConjuredItem extends Item {
 class Shop {
 	constructor(items = []) {
 		this.items = items;
+		this.day = 1;
 	}
 
-	getMaxNameLength() {
+	getHeaders() {
+		return {
+			name: `End of day ${this.day}`,
+			sellIn: "Sel",
+			quality: "Qua",
+		};
+	}
+
+	getMaxItemPropertyLength(key) {
 		if (this.items.length < 1) return 0;
-		const lengths = this.items.map((i) => i.name.length);
+		const entryStrings = this.items.map((i) => new String(i[key]));
+		entryStrings.push(this.getHeaders()[key]);
+		const lengths = entryStrings.map((s) => s.length);
 		return lengths.sort((a, b) => b - a)[0];
 	}
 
-	getMaxSellInLength() {
-		if (this.items.length < 1) return 0;
-		const lengths = this.items.map((i) => String(i.sellIn).length);
-		return lengths.sort((a, b) => b - a)[0];
-	}
-
-	getMaxQualityLength() {
-		if (this.items.length < 1) return 0;
-		const lengths = this.items.map((i) => String(i.quality).length);
-		return lengths.sort((a, b) => b - a)[0];
+	printStockHeader(lengths) {
+		const headers = this.getHeaders();
+		const nameHeader = headers.name.padEnd(lengths.name);
+		const sellInHeader = headers.sellIn.padStart(lengths.sellIn);
+		const qualityHeader = headers.quality.padStart(lengths.quality);
+		console.log(`\n${nameHeader} | ${sellInHeader} | ${qualityHeader}`);
 	}
 
 	printStock() {
-		console.log("\n");
-
 		if (this.items.length < 1) {
 			console.log("There are no items in stock");
 			return;
 		}
 
 		const lengths = {
-			name: this.getMaxNameLength(),
-			sellIn: this.getMaxSellInLength(),
-			quality: this.getMaxQualityLength(),
+			name: this.getMaxItemPropertyLength("name"),
+			sellIn: this.getMaxItemPropertyLength("sellIn"),
+			quality: this.getMaxItemPropertyLength("quality"),
 		};
+
+		this.printStockHeader(lengths);
 
 		this.items.forEach((item) => {
 			item.printItem(lengths);
 		});
+	}
+
+	updateShop() {
+		this.day++;
+		this.updateStock();
 	}
 
 	updateStock() {
@@ -167,7 +179,7 @@ const shop = new Shop([
 
 function simulateShop(days) {
 	for (let day = 1; day < days; day++) {
-		shop.updateStock();
+		shop.updateShop();
 		shop.printStock();
 	}
 }
