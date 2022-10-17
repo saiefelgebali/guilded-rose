@@ -55,6 +55,13 @@ class Shop {
 		});
 	}
 
+	simulate(days) {
+		for (let day = 1; day <= days; day++) {
+			this.updateShop();
+			this.printStock();
+		}
+	}
+
 	updateShop() {
 		this.day++;
 		this.updateStock();
@@ -85,11 +92,4 @@ const shop = new Shop([
 	new ConjuredItem("Conjured Wizard Robes", 16, 50),
 ]);
 
-function simulateShop(days) {
-	for (let day = 1; day <= days; day++) {
-		shop.updateShop();
-		shop.printStock();
-	}
-}
-
-simulateShop(20);
+shop.simulate(20);
