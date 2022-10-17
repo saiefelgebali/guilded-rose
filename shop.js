@@ -47,6 +47,10 @@ export class Shop {
 		});
 	}
 
+	addItem(item) {
+		this.items.push(item);
+	}
+
 	updateShop() {
 		this.day++;
 		this.updateStock();
