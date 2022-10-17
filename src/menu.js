@@ -29,7 +29,6 @@ export async function printShopStock(shop) {
 	shop.printStock();
 	console.log("");
 	await getString("Press Enter to go back...");
-	shop.clearOnUpdate();
 }
 
 export async function getItemFromUser() {
