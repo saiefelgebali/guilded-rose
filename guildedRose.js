@@ -82,6 +82,17 @@ class BackstagePassItem extends Item {
 	}
 }
 
+class ConjuredItem extends Item {
+	constructor(name, sellIn, quality) {
+		super(name, sellIn, quality);
+	}
+
+	updateQuality() {
+		const newQuality = 2 * this.getNewQuality();
+		this.quality = this.getQualityInBounds(newQuality);
+	}
+}
+
 class Shop {
 	constructor(items = []) {
 		this.items = items;
@@ -136,20 +147,24 @@ class Shop {
 const shop = new Shop([
 	new LegendaryItem("Sulfuras, Hand of Ragnaros"),
 	new AgedItem("Aged Brie", 10, 0),
-	// new Item("Witchwood Apple", 3, 15),
-	// new Item("Diving Elixir", 11, 50),
-	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 6, 5),
+	new Item("Witchwood Apple", 3, 15),
+	new Item("Diving Elixir", 11, 50),
+	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 15, 5),
 	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 25, 5),
-	// new Item("Backstage passes to an Ice Cream Boys concert", 25, 5),
-	// new Item("Conjured Wizard Hat", 20, 50),
-	// new Item("Conjured Wizard Robes", 16, 50),
+	new BackstagePassItem(
+		"Backstage passes to an Ice Cream Boys concert",
+		25,
+		5
+	),
+	new ConjuredItem("Conjured Wizard Hat", 20, 50),
+	new ConjuredItem("Conjured Wizard Robes", 16, 50),
 ]);
 
 function simulateShop(days) {
-	for (let day = 0; day < days; day++) {
+	for (let day = 1; day < days; day++) {
 		shop.updateStock();
 		shop.printStock();
 	}
 }
 
-simulateShop(3);
+simulateShop(21);
