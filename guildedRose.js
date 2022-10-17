@@ -8,60 +8,68 @@ import {
 import { Shop } from "./shop.js";
 import { getString } from "./userInput.js";
 
-function mainMenu(shop) {
+async function mainMenu(shop) {
 	console.clear();
-	const input = getString("(a)dd new item or (p)rint items in stock: ", [
-		"a",
-		"p",
-	]);
+	const input = await getString(
+		"(a)dd new item or (p)rint items in stock: ",
+		["a", "p"]
+	);
 
 	switch (input) {
 		case "p":
+			console.log("");
 			shop.printStock();
-			getString("Press Enter to go back...");
+			console.log("");
+			await getString("Press Enter to go back...");
 			break;
 		case "a":
-			addNewItemMenu(shop);
+			await addNewItemMenu(shop);
 			break;
 	}
 }
 
-function getItemFromUser() {
-	const type = getString(
+async function getItemFromUser() {
+	const type = await getString(
 		"What type of item is this? (Normal, aged, legendary, backstage, conjured): ",
 		["n", "a", "l", "b", "c"]
 	);
 
 	switch (type) {
 		case "a":
-			return AgedItem.getItemFromUser();
+			return await AgedItem.getItemFromUser();
 		case "l":
-			return LegendaryItem.getItemFromUser();
+			return await LegendaryItem.getItemFromUser();
 		case "b":
-			return BackstagePassItem.getItemFromUser();
+			return await BackstagePassItem.getItemFromUser();
 		case "c":
-			return ConjuredItem.getItemFromUser();
+			return await ConjuredItem.getItemFromUser();
 		default:
-			return Item.getItemFromUser();
+			return await Item.getItemFromUser();
 	}
 }
 
-function addNewItemMenu(shop) {
+async function addNewItemMenu(shop) {
 	console.clear();
-	const item = getItemFromUser();
+	const item = await getItemFromUser();
 	shop.addItem(item);
+	shop.printStock();
 }
 
 function listenForUserInput(shop) {
-	while (true) {
-		mainMenu(shop);
-	}
+	new Promise(async (resolve) => {
+		await mainMenu(shop);
+		resolve();
+	}).then(() => listenForUserInput(shop));
 }
 
 function startShop(dayLength = 1000) {
 	const shop = new Shop();
 
-	setInterval(() => shop.updateShop, dayLength);
+	new Promise(() => {
+		setInterval(() => {
+			shop.updateShop();
+		}, dayLength);
+	});
 
 	listenForUserInput(shop);
 }

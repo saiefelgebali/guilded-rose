@@ -1,10 +1,10 @@
 import { getInt, getString } from "./userInput.js";
 
 export class Item {
-	static getItemFromUser() {
-		const name = getString("Name: ");
-		const sellIn = getInt("Sell in days: ");
-		const quality = getInt("Quality: ");
+	static async getItemFromUser() {
+		const name = await getString("Name: ");
+		const sellIn = await getInt("Sell in days: ");
+		const quality = await getInt("Quality: ");
 		return new Item(name, sellIn, quality);
 	}
 
@@ -65,8 +65,8 @@ export class AgedItem extends Item {
 }
 
 export class LegendaryItem extends Item {
-	static getItemFromUser() {
-		const name = getString("Name: ");
+	static async getItemFromUser() {
+		const name = await getString("Name: ");
 		return new LegendaryItem(name);
 	}
 
