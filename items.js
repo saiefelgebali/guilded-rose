@@ -5,7 +5,7 @@ export class Item {
 		const name = await getString("Name: ");
 		const sellIn = await getInt("Sell in days: ");
 		const quality = await getInt("Quality: ");
-		return new Item(name, sellIn, quality);
+		return new this(name, sellIn, quality);
 	}
 
 	constructor(name, sellIn, quality, maxQuality = 50) {
