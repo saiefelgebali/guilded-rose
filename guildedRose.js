@@ -48,6 +48,9 @@ class AgedItem extends Item {
 	}
 
 	getNewQuality() {
+		if (this.isExpired()) {
+			return this.quality + 2;
+		}
 		return this.quality + 1;
 	}
 }
@@ -87,9 +90,11 @@ class ConjuredItem extends Item {
 		super(name, sellIn, quality);
 	}
 
-	updateQuality() {
-		const newQuality = 2 * this.getNewQuality();
-		this.quality = this.getQualityInBounds(newQuality);
+	getNewQuality() {
+		if (this.isExpired()) {
+			return this.quality - 4;
+		}
+		return this.quality - 2;
 	}
 }
 
@@ -145,10 +150,10 @@ class Shop {
 }
 
 const shop = new Shop([
-	new LegendaryItem("Sulfuras, Hand of Ragnaros"),
-	new AgedItem("Aged Brie", 10, 0),
-	new Item("Witchwood Apple", 3, 15),
-	new Item("Diving Elixir", 11, 50),
+	// new LegendaryItem("Sulfuras, Hand of Ragnaros"),
+	// new AgedItem("Aged Brie", 10, 0),
+	// new Item("Witchwood Apple", 3, 15),
+	// new Item("Diving Elixir", 11, 50),
 	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 15, 5),
 	new BackstagePassItem("Backstage passes to a TAFKAL80ETC concert", 25, 5),
 	new BackstagePassItem(
@@ -156,8 +161,8 @@ const shop = new Shop([
 		25,
 		5
 	),
-	new ConjuredItem("Conjured Wizard Hat", 20, 50),
-	new ConjuredItem("Conjured Wizard Robes", 16, 50),
+	// new ConjuredItem("Conjured Wizard Hat", 20, 50),
+	// new ConjuredItem("Conjured Wizard Robes", 16, 50),
 ]);
 
 function simulateShop(days) {
