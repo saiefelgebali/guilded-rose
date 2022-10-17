@@ -42,6 +42,17 @@ class Item {
 	}
 }
 
+class AgedItem extends Item {
+	constructor(name, sellIn, quality) {
+		super(name, sellIn, quality);
+	}
+
+	updateQuality() {
+		const newQuality = this.quality + 1;
+		this.quality = this.getQualityInBounds(newQuality);
+	}
+}
+
 class Shop {
 	constructor(items = []) {
 		this.items = items;
@@ -94,15 +105,15 @@ class Shop {
 }
 
 const shop = new Shop([
-	new Item("Sulfuras, Hand of Ragnaros", 0, 80),
-	new Item("Aged Brie", 10, 0),
-	new Item("Witchwood Apple", 3, 15),
-	new Item("Diving Elixir", 11, 50),
-	new Item("Backstage passes to a TAFKAL80ETC concert", 15, 5),
-	new Item("Backstage passes to a TAFKAL80ETC concert", 25, 5),
-	new Item("Backstage passes to an Ice Cream Boys concert", 25, 5),
-	new Item("Conjured Wizard Hat", 20, 50),
-	new Item("Conjured Wizard Robes", 16, 50),
+	// new Item("Sulfuras, Hand of Ragnaros", 0, 80),
+	new AgedItem("Aged Brie", 10, 0),
+	// new Item("Witchwood Apple", 3, 15),
+	// new Item("Diving Elixir", 11, 50),
+	// new Item("Backstage passes to a TAFKAL80ETC concert", 15, 5),
+	// new Item("Backstage passes to a TAFKAL80ETC concert", 25, 5),
+	// new Item("Backstage passes to an Ice Cream Boys concert", 25, 5),
+	// new Item("Conjured Wizard Hat", 20, 50),
+	// new Item("Conjured Wizard Robes", 16, 50),
 ]);
 
 function simulateShop(days) {
